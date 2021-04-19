@@ -77,7 +77,7 @@ class PopupMenu {
   /// callback
   VoidCallback? dismissCallback;
   late MenuClickCallback onClickMenu;
-  late PopupMenuStateChanged stateChanged;
+  PopupMenuStateChanged? stateChanged;
 
   late Size _screenSize; // 屏幕的尺寸
 
@@ -103,7 +103,7 @@ class PopupMenu {
       required Color backgroundColor,
       required Color highlightColor,
       required Color lineColor,
-      required PopupMenuStateChanged stateChanged,
+      PopupMenuStateChanged? stateChanged,
       required List<MenuItemProvider> items}) {
     this.onClickMenu = onClickMenu;
     this.dismissCallback = onDismiss;
@@ -120,16 +120,16 @@ class PopupMenu {
   }
 
   void show(
-      {required Rect rect,
+      {Rect? rect,
       required GlobalKey widgetKey,
-      required List<MenuItemProvider> items}) {
+      List<MenuItemProvider>? items}) {
     // if (rect == null && widgetKey == null) {
     //   print("'rect' and 'key' can't be both null");
     //   return;
     // }
 
-    this.items = items;
-    this._showRect = rect; // ?? PopupMenu.getWidgetGlobalRect(widgetKey);
+    this.items = items!;
+    this._showRect = rect!; // ?? PopupMenu.getWidgetGlobalRect(widgetKey);
     this._screenSize = window.physicalSize / window.devicePixelRatio;
     this.dismissCallback = dismissCallback;
 
@@ -142,7 +142,7 @@ class PopupMenu {
     Overlay.of(PopupMenu.context)!.insert(_entry);
     isShow = true;
     //if (this.stateChanged != null) {
-    this.stateChanged(true);
+    this.stateChanged!(true);
     //}
   }
 
@@ -381,11 +381,11 @@ class PopupMenu {
     _entry.remove();
     isShow = false;
     //if (dismissCallback != null) {
-    dismissCallback();
+    dismissCallback!();
     //}
 
     //if (this.stateChanged != null) {
-    this.stateChanged(false);
+    this.stateChanged!(false);
     //}
   }
 }

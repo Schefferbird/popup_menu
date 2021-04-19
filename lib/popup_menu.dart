@@ -18,10 +18,14 @@ class MenuItem extends MenuItemProvider {
   String title; // 菜单标题
   var userInfo; // 额外的菜单荐信息
   TextStyle textStyle;
-  TextAlign textAlign;
+  TextAlign? textAlign;
 
   MenuItem(
-      {this.title, this.image, this.userInfo, this.textStyle, this.textAlign});
+      {required this.title,
+      required this.image,
+      this.userInfo,
+      required this.textStyle,
+      required this.textAlign});
 
   @override
   Widget get menuImage => image;
@@ -30,8 +34,7 @@ class MenuItem extends MenuItemProvider {
   String get menuTitle => title;
 
   @override
-  TextStyle get menuTextStyle =>
-      textStyle ?? TextStyle(color: Color(0xffc5c5c5), fontSize: 15.0);
+  TextStyle get menuTextStyle => textStyle;
 
   @override
   TextAlign get menuTextAlign => textAlign ?? TextAlign.center;
@@ -46,85 +49,85 @@ class PopupMenu {
   //static var itemWidth = 115.0;
   static var itemHeight = 45.0;
   static var arrowHeight = 12.0;
-  OverlayEntry _entry;
-  List<MenuItemProvider> items;
+  late OverlayEntry _entry;
+  late List<MenuItemProvider> items;
 
-  double _itemWidth;
+  late double _itemWidth;
 
   /// row count
-  int _row;
+  late int _row;
 
   /// col count
-  int _col;
+  late int _col;
 
   /// The left top point of this menu.
-  Offset _offset;
+  late Offset _offset;
 
   /// Menu will show at above or under this rect
-  Rect _showRect;
+  late Rect _showRect;
 
   /// if false menu is show above of the widget, otherwise menu is show under the widget
   bool _isDown = true;
 
   /// The max column count, default is 4.
-  int _maxColumn;
+  int _maxColumn = 4;
 
   bool isReference = false;
 
   /// callback
-  VoidCallback dismissCallback;
-  MenuClickCallback onClickMenu;
-  PopupMenuStateChanged stateChanged;
+  late VoidCallback dismissCallback;
+  late MenuClickCallback onClickMenu;
+  late PopupMenuStateChanged stateChanged;
 
-  Size _screenSize; // 屏幕的尺寸
+  late Size _screenSize; // 屏幕的尺寸
 
   /// Cannot be null
-  static BuildContext context;
+  static late BuildContext context;
 
   /// style
-  Color _backgroundColor;
-  Color _highlightColor;
-  Color _lineColor;
+  Color _backgroundColor = Color(0xff232323);
+  Color _highlightColor = Color(0x55000000);
+  Color _lineColor = Color(0xff353535);
 
   /// It's showing or not.
   bool _isShow = false;
   bool get isShow => _isShow;
 
   PopupMenu(
-      {MenuClickCallback onClickMenu,
-      BuildContext context,
-      VoidCallback onDismiss,
-      double itemWidth,
-      int maxColumn,
-      bool isReference,
-      Color backgroundColor,
-      Color highlightColor,
-      Color lineColor,
-      PopupMenuStateChanged stateChanged,
-      List<MenuItemProvider> items}) {
+      {required MenuClickCallback onClickMenu,
+      required BuildContext context,
+      required VoidCallback onDismiss,
+      required double itemWidth,
+      required int maxColumn,
+      required bool isReference,
+      required Color backgroundColor,
+      required Color highlightColor,
+      required Color lineColor,
+      required PopupMenuStateChanged stateChanged,
+      required List<MenuItemProvider> items}) {
     this.onClickMenu = onClickMenu;
     this.dismissCallback = onDismiss;
     this._itemWidth = itemWidth;
     this.stateChanged = stateChanged;
     this.items = items;
-    this._maxColumn = maxColumn ?? 4;
-    this.isReference = isReference ?? false;
-    this._backgroundColor = backgroundColor ?? Color(0xff232323);
-    this._lineColor = lineColor ?? Color(0xff353535);
-    this._highlightColor = highlightColor ?? Color(0x55000000);
-    if (context != null) {
-      PopupMenu.context = context;
-    }
+    this._maxColumn = maxColumn;
+    this.isReference = isReference;
+    this._backgroundColor = backgroundColor;
+    this._lineColor = lineColor;
+    this._highlightColor = highlightColor;
+    
+    PopupMenu.context = context;
+    
   }
 
-  void show({Rect rect, GlobalKey widgetKey, List<MenuItemProvider> items}) {
-    if (rect == null && widgetKey == null) {
-      print("'rect' and 'key' can't be both null");
-      return;
-    }
+  void show({required Rect rect, required GlobalKey widgetKey, required List<MenuItemProvider> items}) {
+    // if (rect == null && widgetKey == null) {
+    //   print("'rect' and 'key' can't be both null");
+    //   return;
+    // }
 
-    this.items = items ?? this.items;
-    this._showRect = rect ?? PopupMenu.getWidgetGlobalRect(widgetKey);
+    this.items = items;
+    this._showRect = rect; // ?? PopupMenu.getWidgetGlobalRect(widgetKey);
     this._screenSize = window.physicalSize / window.devicePixelRatio;
     this.dismissCallback = dismissCallback;
 
@@ -134,15 +137,15 @@ class PopupMenu {
       return buildPopupMenuLayout(_offset);
     });
 
-    Overlay.of(PopupMenu.context).insert(_entry);
+    Overlay.of(PopupMenu.context)!.insert(_entry);
     _isShow = true;
-    if (this.stateChanged != null) {
+    //if (this.stateChanged != null) {
       this.stateChanged(true);
-    }
+    //}
   }
 
   static Rect getWidgetGlobalRect(GlobalKey key) {
-    RenderBox renderBox = key.currentContext.findRenderObject() as RenderBox;
+    RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
     var offset = renderBox.localToGlobal(Offset.zero);
     return Rect.fromLTWH(
         offset.dx, offset.dy, renderBox.size.width, renderBox.size.height);
@@ -398,14 +401,14 @@ class _MenuItemWidget extends StatefulWidget {
   final Function(MenuItemProvider item) clickCallback;
 
   _MenuItemWidget(
-      {this.item,
+      {required this.item,
       this.showLine = false,
       this.isReference = false,
-      this.itemWidth,
-      this.clickCallback,
-      this.lineColor,
-      this.backgroundColor,
-      this.highlightColor});
+      required this.itemWidth,
+      required this.clickCallback,
+      required this.lineColor,
+      required this.backgroundColor,
+      required this.highlightColor});
 
   @override
   State<StatefulWidget> createState() {
@@ -440,9 +443,9 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
         setState(() {});
       },
       onTap: () {
-        if (widget.clickCallback != null) {
+        //if (widget.clickCallback != null) {
           widget.clickCallback(widget.item);
-        }
+        //}
       },
       child: Container(
           width: widget.itemWidth,
@@ -459,7 +462,7 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
   }
 
   Widget _createContent() {
-    if (widget.item.menuImage != null) {
+    //if (widget.item.menuImage != null) {
       // image and text
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -497,20 +500,20 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
           )
         ],
       );
-    } else {
-      // only text
-      return Container(
-        child: Center(
-          child: Material(
-            color: Colors.transparent,
-            child: Text(
-              widget.item.menuTitle,
-              style: widget.item.menuTextStyle,
-              textAlign: widget.item.menuTextAlign,
-            ),
-          ),
-        ),
-      );
-    }
+    // } else {
+    //   // only text
+    //   return Container(
+    //     child: Center(
+    //       child: Material(
+    //         color: Colors.transparent,
+    //         child: Text(
+    //           widget.item.menuTitle,
+    //           style: widget.item.menuTextStyle,
+    //           textAlign: widget.item.menuTextAlign,
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // }
   }
 }

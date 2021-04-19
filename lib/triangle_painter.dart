@@ -5,7 +5,7 @@ class TrianglePainter extends CustomPainter {
   bool isDown;
   Color color;
 
-  TrianglePainter({this.isDown = true, this.color});
+  TrianglePainter({this.isDown = true, required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {

@@ -115,12 +115,14 @@ class PopupMenu {
     this._backgroundColor = backgroundColor;
     this._lineColor = lineColor;
     this._highlightColor = highlightColor;
-    
+
     PopupMenu.context = context;
-    
   }
 
-  void show({required Rect rect, required GlobalKey widgetKey, required List<MenuItemProvider> items}) {
+  void show(
+      {required Rect rect,
+      required GlobalKey widgetKey,
+      required List<MenuItemProvider> items}) {
     // if (rect == null && widgetKey == null) {
     //   print("'rect' and 'key' can't be both null");
     //   return;
@@ -140,7 +142,7 @@ class PopupMenu {
     Overlay.of(PopupMenu.context)!.insert(_entry);
     _isShow = true;
     //if (this.stateChanged != null) {
-      this.stateChanged(true);
+    this.stateChanged(true);
     //}
   }
 
@@ -296,7 +298,7 @@ class PopupMenu {
 
   // calculate row count
   int _calculateRowCount() {
-    if (items == null || items.length == 0) {
+    if (items.length == 0) {
       debugPrint('error menu items can not be null');
       return 0;
     }
@@ -314,7 +316,7 @@ class PopupMenu {
 
   // calculate col count
   int _calculateColCount() {
-    if (items == null || items.length == 0) {
+    if (items.length == 0) {
       debugPrint('error menu items can not be null');
       return 0;
     }
@@ -363,9 +365,9 @@ class PopupMenu {
   }
 
   dynamic itemClicked(MenuItemProvider item) {
-    if (onClickMenu != null) {
-      onClickMenu(item);
-    }
+    //if (onClickMenu != null) {
+    onClickMenu(item);
+    //}
 
     dismiss();
   }
@@ -378,13 +380,13 @@ class PopupMenu {
 
     _entry.remove();
     _isShow = false;
-    if (dismissCallback != null) {
-      dismissCallback();
-    }
+    //if (dismissCallback != null) {
+    dismissCallback();
+    //}
 
-    if (this.stateChanged != null) {
-      this.stateChanged(false);
-    }
+    //if (this.stateChanged != null) {
+    this.stateChanged(false);
+    //}
   }
 }
 
@@ -444,7 +446,7 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
       },
       onTap: () {
         //if (widget.clickCallback != null) {
-          widget.clickCallback(widget.item);
+        widget.clickCallback(widget.item);
         //}
       },
       child: Container(
@@ -463,43 +465,43 @@ class _MenuItemWidgetState extends State<_MenuItemWidget> {
 
   Widget _createContent() {
     //if (widget.item.menuImage != null) {
-      // image and text
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          widget.isReference == true
-              ? Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.purpleAccent,
-                      border: Border.all(width: 4),
-                      backgroundBlendMode: BlendMode.exclusion),
-                  width: 26.0,
-                  height: 26.0,
-                  child: widget.item.menuImage,
-                )
-              : Container(
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  width: 24.0,
-                  height: 24.0,
-                  child: widget.item.menuImage,
-                ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 1),
-            margin: EdgeInsets.only(right: 6),
-            height: 22.0,
-            child: Material(
-              color: Colors.transparent,
-              child: Text(
-                widget.item.menuTitle,
-                style: widget.item.menuTextStyle,
+    // image and text
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        widget.isReference == true
+            ? Container(
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.purpleAccent,
+                    border: Border.all(width: 4),
+                    backgroundBlendMode: BlendMode.exclusion),
+                width: 26.0,
+                height: 26.0,
+                child: widget.item.menuImage,
+              )
+            : Container(
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                width: 24.0,
+                height: 24.0,
+                child: widget.item.menuImage,
               ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 1),
+          margin: EdgeInsets.only(right: 6),
+          height: 22.0,
+          child: Material(
+            color: Colors.transparent,
+            child: Text(
+              widget.item.menuTitle,
+              style: widget.item.menuTextStyle,
             ),
-          )
-        ],
-      );
+          ),
+        )
+      ],
+    );
     // } else {
     //   // only text
     //   return Container(

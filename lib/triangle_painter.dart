@@ -3,15 +3,15 @@ import 'package:flutter/rendering.dart';
 // 画弹出菜单下面的三角形
 class TrianglePainter extends CustomPainter {
   bool isDown;
-  Color color;
+  Color? color;
 
-  TrianglePainter({this.isDown = true, required this.color});
+  TrianglePainter({this.isDown = true, this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint _paint = new Paint();
     _paint.strokeWidth = 2.0;
-    _paint.color = color;
+    _paint.color = color!;
     _paint.style = PaintingStyle.fill;
 
     Path path = new Path();

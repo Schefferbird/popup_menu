@@ -25,7 +25,7 @@ class MenuItem extends MenuItemProvider {
       required this.image,
       this.userInfo,
       required this.textStyle,
-      required this.textAlign});
+      this.textAlign});
 
   @override
   Widget get menuImage => image;
@@ -90,8 +90,8 @@ class PopupMenu {
   Color _lineColor = Color(0xff353535);
 
   /// It's showing or not.
-  bool _isShow = false;
-  bool get isShow => _isShow;
+  bool isShow = false;
+  
 
   PopupMenu(
       {required MenuClickCallback onClickMenu,
@@ -140,7 +140,7 @@ class PopupMenu {
     });
 
     Overlay.of(PopupMenu.context)!.insert(_entry);
-    _isShow = true;
+    isShow = true;
     //if (this.stateChanged != null) {
     this.stateChanged(true);
     //}
@@ -373,13 +373,13 @@ class PopupMenu {
   }
 
   void dismiss() {
-    if (!_isShow) {
+    if (!isShow) {
       // Remove method should only be called once
       return;
     }
 
     _entry.remove();
-    _isShow = false;
+    isShow = false;
     //if (dismissCallback != null) {
     dismissCallback();
     //}

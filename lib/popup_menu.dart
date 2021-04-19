@@ -75,7 +75,7 @@ class PopupMenu {
   bool isReference = false;
 
   /// callback
-  late VoidCallback dismissCallback;
+  VoidCallback? dismissCallback;
   late MenuClickCallback onClickMenu;
   late PopupMenuStateChanged stateChanged;
 
@@ -96,7 +96,7 @@ class PopupMenu {
   PopupMenu(
       {required MenuClickCallback onClickMenu,
       required BuildContext context,
-      required VoidCallback onDismiss,
+      VoidCallback? onDismiss,
       required double itemWidth,
       required int maxColumn,
       required bool isReference,
